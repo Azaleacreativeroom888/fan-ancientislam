@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日々の記録 ｜ 砂上図書館</title>
+<meta name="description" content="砂上図書館の日記ページ。日付と短い覚書だけを、思いついた時に書き留めています。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Shippori+Mincho:wght@400;600;800&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand-light: #efe3c8;
+    --sand: #d9bd8c;
+    --sand-deep: #c2a06c;
+    --clay: #a9724f;
+    --ink: #2a2016;
+    --ink-soft: #4a3a28;
+    --turquoise: #2e9c97;
+    --turquoise-deep: #1d6b68;
+    --gold: #c08a2e;
+    --paper: #f7f0dc;
+
+    --font-display: 'Amiri', serif;
+    --font-jp-head: 'Shippori Mincho', serif;
+    --font-jp-body: 'Noto Sans JP', sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background: var(--sand-light);
+    color: var(--ink);
+    font-family: var(--font-jp-body);
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  ::selection{ background: var(--turquoise); color: var(--paper); }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline: 2px solid var(--turquoise-deep);
+    outline-offset: 3px;
+  }
+
+  body::before{
+    content:"";
+    position: fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(169,114,79,0.06) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(46,156,151,0.05) 0, transparent 45%);
+  }
+
+  .wrap{ max-width: 760px; margin:0 auto; padding: 0 28px; position:relative; z-index:1; }
+
+  .divider{ width:100%; height: 26px; display:flex; justify-content:center; align-items:center; overflow:hidden; }
+  .divider svg{ height: 100%; width: auto; }
+
+  header.site-header{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(239,227,200,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--sand-deep);
+  }
+  .nav-inner{
+    max-width:1080px; margin:0 auto; padding: 16px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    flex-wrap: wrap;
+  }
+  .brand{ display:flex; align-items:baseline; gap:10px; text-decoration:none; }
+  .brand-mark{ font-family: var(--font-display); font-size: 1.55rem; color: var(--turquoise-deep); letter-spacing: .04em; }
+  .brand-jp{ font-family: var(--font-jp-head); font-size: 1.05rem; font-weight: 600; color: var(--ink); letter-spacing: .08em; }
+  nav.site-nav ul{ list-style:none; display:flex; gap: 6px; margin:0; padding:0; flex-wrap:wrap; }
+  nav.site-nav a{
+    display:inline-block; text-decoration:none; font-size: .92rem; letter-spacing: .06em;
+    padding: 8px 14px; border-radius: 2px; color: var(--ink-soft); position:relative; transition: color .2s ease;
+  }
+  nav.site-nav a::after{
+    content:""; position:absolute; left:14px; right:14px; bottom:5px; height:1px;
+    background: var(--turquoise); transform: scaleX(0); transform-origin: left; transition: transform .25s ease;
+  }
+  nav.site-nav a:hover::after, nav.site-nav a[aria-current="page"]::after{ transform: scaleX(1); }
+  nav.site-nav a[aria-current="page"]{ color: var(--turquoise-deep); font-weight:500; }
+
+  .page-hero{ padding: 60px 28px 34px; text-align:center; }
+  .eyebrow{
+    font-family: var(--font-display); font-style: italic; color: var(--turquoise-deep);
+    letter-spacing: .12em; font-size: .95rem; margin: 0 0 6px;
+  }
+  h1.page-title{
+    font-family: var(--font-jp-head); font-weight: 800; font-size: clamp(1.8rem, 4.5vw, 2.5rem);
+    margin: 0 0 10px; letter-spacing: .05em;
+  }
+  .page-lede{ max-width: 480px; margin: 0 auto; font-size: .94rem; color: var(--ink-soft); }
+
+  /* ---- year grouping ---- */
+  .year-block{ padding: 44px 0 10px; }
+  .year-label{
+    font-family: var(--font-display); font-style: italic; font-size: 1.3rem;
+    color: var(--sand-deep); letter-spacing: .05em; margin: 0 0 8px;
+  }
+
+  /* ---- diary entries: date + text only ---- */
+  ul.entries{ list-style:none; margin:0; padding:0; border-top: 1px solid var(--sand-deep); }
+  ul.entries li{
+    padding: 22px 0;
+    border-bottom: 1px solid var(--sand-deep);
+    display: grid;
+    grid-template-columns: 108px 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 560px){
+    ul.entries li{ grid-template-columns: 1fr; gap: 6px; }
+  }
+  .entry-date{
+    font-family: var(--font-display);
+    color: var(--clay);
+    font-size: .9rem;
+    letter-spacing: .02em;
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+  .entry-text{
+    font-size: .96rem;
+    color: var(--ink);
+    white-space: pre-line;
+  }
+
+  footer{ margin-top: 40px; background: var(--ink); color: var(--sand); padding: 44px 0 26px; }
+  .footer-grid{
+    display:flex; justify-content:space-between; gap: 30px; flex-wrap:wrap;
+    padding-bottom: 26px; border-bottom: 1px solid rgba(217,189,140,0.25);
+    max-width:1080px; margin:0 auto; padding-left:28px; padding-right:28px;
+  }
+  .footer-brand{ font-family: var(--font-jp-head); font-size: 1.1rem; color: var(--sand-light); }
+  .footer-links{ list-style:none; display:flex; gap:18px; margin:0; padding:0; flex-wrap:wrap; }
+  .footer-links a{ text-decoration:none; color: var(--sand); font-size: .85rem; }
+  .footer-links a:hover{ color: var(--turquoise); }
+  .footer-bottom{
+    max-width:1080px; margin:0 auto; padding: 20px 28px 0;
+    font-size: .74rem; color: rgba(217,189,140,0.7); line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">Bayt</span>
+      <span class="brand-jp">砂上図書館</span>
+    </a>
+    <nav class="site-nav" aria-label="サイト内ナビゲーション">
+      <ul>
+        <li><a href="index.html">index</a></li>
+        <li><a href="blog.html" aria-current="page">blog</a></li>
+        <li><a href="gallery.html">gallery</a></li>
+        <li><a href="about.html">about</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">— Marginalia —</p>
+      <h1 class="page-title">日々の記録</h1>
+      <p class="page-lede">日付と、その日思ったことだけを書き留めています。特に整理はしていません。</p>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <svg viewBox="0 0 400 26" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#2e9c97" stroke-width="1.4"><path d="M0,13 H400"/></g>
+      <g fill="none" stroke="#c08a2e" stroke-width="1.2">
+        <rect x="4"   y="6" width="14" height="14" transform="rotate(45 11 13)"/>
+        <rect x="44"  y="6" width="14" height="14" transform="rotate(45 51 13)"/>
+        <rect x="84"  y="6" width="14" height="14" transform="rotate(45 91 13)"/>
+        <rect x="124" y="6" width="14" height="14" transform="rotate(45 131 13)"/>
+        <rect x="164" y="6" width="14" height="14" transform="rotate(45 171 13)"/>
+        <rect x="204" y="6" width="14" height="14" transform="rotate(45 211 13)"/>
+        <rect x="244" y="6" width="14" height="14" transform="rotate(45 251 13)"/>
+        <rect x="284" y="6" width="14" height="14" transform="rotate(45 291 13)"/>
+        <rect x="324" y="6" width="14" height="14" transform="rotate(45 331 13)"/>
+        <rect x="364" y="6" width="14" height="14" transform="rotate(45 371 13)"/>
+      </g>
+    </svg>
+  </div>
+
+  <section>
+    <div class="wrap">
+
+      <div class="year-block">
+        <p class="year-label">2026</p>
+        <ul class="entries">
+          <li>
+            <span class="entry-date">08.18</span>
+            <span class="entry-text">星紋のスケッチをやり直す。八角形の重なりが思ったより難しい。線が一本ずれるだけで全体の呼吸が変わる。</span>
+          </li>
+          <li>
+            <span class="entry-date">08.12</span>
+            <span class="entry-text">アストロラーベの資料を読む。目盛りの意味が少しわかってきた気がするけれど、まだ半分も理解できていない。</span>
+          </li>
+          <li>
+            <span class="entry-date">08.05</span>
+            <span class="entry-text">翻訳運動についての本、序章だけ読了。知恵の家に集まった人々を想像すると、それだけで手が止まる。</span>
+          </li>
+          <li>
+            <span class="entry-date">07.29</span>
+            <span class="entry-text">砂の色を混ぜる練習。思っていたより黄土色は難しい。次はターコイズとの境目を試す。</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">砂上図書館 <span style="opacity:.6; font-size:.75rem;">— Bayt al‑Ḥikma, Imagined</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">index</a></li>
+      <li><a href="blog.html">blog</a></li>
+      <li><a href="gallery.html">gallery</a></li>
+      <li><a href="about.html">about</a></li>
+      <li><a href="https://azaleacreativeroom888.github.io" target="_blank" rel="noopener">Azalea Creative Room</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <p>
+      当サイトの文章・画像等のすべてのコンテンツを、AIモデルの学習目的で使用することを禁じます。<br>
+      The use of any content on this site (text, images, or otherwise) for AI training purposes is strictly prohibited.
+    </p>
+    <p>© 砂上図書館 / Azalea Creative Room. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
