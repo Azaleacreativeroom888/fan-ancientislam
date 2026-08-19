@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>砂上図書館 ―House of Wisdom, Imagined―</title>
+<meta name="description" content="8世紀バグダードに実在した「知恵の家」に着想を得た、古代イスラム世界をめぐる個人サイト「砂上図書館」。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Shippori+Mincho:wght@400;600;800&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand-light: #efe3c8;
+    --sand: #d9bd8c;
+    --sand-deep: #c2a06c;
+    --clay: #a9724f;
+    --ink: #2a2016;
+    --ink-soft: #4a3a28;
+    --turquoise: #2e9c97;
+    --turquoise-deep: #1d6b68;
+    --gold: #c08a2e;
+    --paper: #f7f0dc;
+
+    --font-display: 'Amiri', serif;
+    --font-jp-head: 'Shippori Mincho', serif;
+    --font-jp-body: 'Noto Sans JP', sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background: var(--sand-light);
+    color: var(--ink);
+    font-family: var(--font-jp-body);
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: inherit; }
+  img{ max-width:100%; display:block; }
+
+  ::selection{ background: var(--turquoise); color: var(--paper); }
+
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline: 2px solid var(--turquoise-deep);
+    outline-offset: 3px;
+  }
+
+  /* subtle desert texture */
+  body::before{
+    content:"";
+    position: fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    opacity:.5;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(169,114,79,0.06) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(46,156,151,0.05) 0, transparent 45%);
+  }
+
+  .wrap{ max-width: 1080px; margin:0 auto; padding: 0 28px; position:relative; z-index:1; }
+
+  /* ---------- geometric divider ---------- */
+  .divider{
+    width:100%;
+    height: 26px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    margin: 0 auto;
+  }
+  .divider svg{ height: 100%; width: auto; }
+
+  /* ---------- header / nav ---------- */
+  header.site-header{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(239,227,200,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--sand-deep);
+  }
+  .nav-inner{
+    max-width:1080px; margin:0 auto; padding: 16px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    flex-wrap: wrap;
+  }
+  .brand{
+    display:flex; align-items:baseline; gap:10px;
+    text-decoration:none;
+  }
+  .brand-mark{
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    color: var(--turquoise-deep);
+    letter-spacing: .04em;
+  }
+  .brand-jp{
+    font-family: var(--font-jp-head);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: .08em;
+  }
+  nav.site-nav ul{
+    list-style:none; display:flex; gap: 6px; margin:0; padding:0; flex-wrap:wrap;
+  }
+  nav.site-nav a{
+    display:inline-block;
+    text-decoration:none;
+    font-size: .92rem;
+    letter-spacing: .06em;
+    padding: 8px 14px;
+    border-radius: 2px;
+    color: var(--ink-soft);
+    position:relative;
+    transition: color .2s ease;
+  }
+  nav.site-nav a::after{
+    content:"";
+    position:absolute; left:14px; right:14px; bottom:5px; height:1px;
+    background: var(--turquoise);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .25s ease;
+  }
+  nav.site-nav a:hover::after, nav.site-nav a[aria-current="page"]::after{ transform: scaleX(1); }
+  nav.site-nav a[aria-current="page"]{ color: var(--turquoise-deep); font-weight:500; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position: relative;
+    padding: 76px 28px 40px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .arch-frame{
+    max-width: 460px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .arch-frame svg{ width:100%; height:auto; }
+  .hero-copy{
+    position: relative;
+    margin-top: -190px;
+    padding-top: 140px;
+  }
+  .eyebrow{
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--turquoise-deep);
+    letter-spacing: .12em;
+    font-size: .95rem;
+    margin: 0 0 6px;
+  }
+  h1.hero-title{
+    font-family: var(--font-jp-head);
+    font-weight: 800;
+    font-size: clamp(2.1rem, 5vw, 3rem);
+    margin: 0 0 10px;
+    color: var(--ink);
+    letter-spacing: .05em;
+  }
+  .hero-sub{
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--clay);
+    letter-spacing: .03em;
+    margin: 0 0 26px;
+  }
+  .hero-lede{
+    max-width: 560px;
+    margin: 0 auto;
+    font-size: .98rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- sections ---------- */
+  section{ padding: 56px 0; position:relative; }
+  .section-head{
+    display:flex; align-items:baseline; gap: 14px; margin-bottom: 26px;
+    flex-wrap: wrap;
+  }
+  .section-num{
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--turquoise);
+    font-size: 1.1rem;
+  }
+  h2.section-title{
+    font-family: var(--font-jp-head);
+    font-weight: 600;
+    font-size: 1.55rem;
+    margin: 0;
+    letter-spacing: .04em;
+  }
+  .section-note{
+    margin-left:auto;
+    font-size: .82rem;
+    color: var(--ink-soft);
+    opacity: .75;
+  }
+
+  .card-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 22px;
+  }
+  .card{
+    background: var(--paper);
+    border: 1px solid var(--sand-deep);
+    padding: 26px 24px;
+    position:relative;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .card:hover{ transform: translateY(-4px); box-shadow: 0 10px 26px rgba(42,32,22,0.12); }
+  .card::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:3px;
+    background: linear-gradient(90deg, var(--turquoise), var(--gold));
+  }
+  .card h3{
+    font-family: var(--font-jp-head);
+    font-size: 1.1rem;
+    margin: 4px 0 10px;
+  }
+  .card p{ margin:0 0 16px; font-size: .92rem; color: var(--ink-soft); }
+  .card a.card-link{
+    text-decoration:none;
+    font-size: .85rem;
+    color: var(--turquoise-deep);
+    letter-spacing: .04em;
+    border-bottom: 1px solid var(--turquoise-deep);
+    padding-bottom: 2px;
+  }
+
+  /* records list (blog teaser) */
+  .records{
+    list-style:none; margin:0; padding:0;
+    border-top: 1px solid var(--sand-deep);
+  }
+  .records li{
+    display:flex; gap: 22px; align-items:baseline;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--sand-deep);
+    flex-wrap: wrap;
+  }
+  .rec-date{
+    font-family: var(--font-display);
+    color: var(--clay);
+    font-size: .92rem;
+    min-width: 108px;
+  }
+  .rec-text{ flex:1; min-width: 200px; color: var(--ink-soft); font-size: .95rem; }
+
+  .cta-line{ margin-top: 22px; }
+  .cta{
+    display:inline-flex; align-items:center; gap:8px;
+    text-decoration:none;
+    font-size: .9rem;
+    color: var(--turquoise-deep);
+    letter-spacing: .05em;
+    border: 1px solid var(--turquoise-deep);
+    padding: 10px 20px;
+    transition: background .2s ease, color .2s ease;
+  }
+  .cta:hover{ background: var(--turquoise-deep); color: var(--paper); }
+
+  /* gallery teaser swatches */
+  .swatch-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 14px;
+  }
+  .swatch{
+    aspect-ratio: 1;
+    position: relative;
+    border: 1px solid var(--sand-deep);
+    overflow:hidden;
+  }
+  .swatch svg{ width:100%; height:100%; }
+
+  /* about teaser */
+  .about-teaser{
+    display:grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 40px;
+    align-items:center;
+  }
+  @media (max-width: 760px){ .about-teaser{ grid-template-columns: 1fr; } }
+  .about-teaser p{ color: var(--ink-soft); font-size: .96rem; }
+  .quote-block{
+    background: var(--ink);
+    color: var(--sand-light);
+    padding: 30px 28px;
+    position: relative;
+  }
+  .quote-block::before{
+    content: "“";
+    font-family: var(--font-display);
+    font-size: 3.2rem;
+    color: var(--turquoise);
+    line-height: 1;
+    display:block;
+    margin-bottom: -10px;
+  }
+  .quote-block p{ color: var(--sand-light); font-family: var(--font-jp-head); font-size: 1.05rem; margin:0; }
+  .quote-block span{ display:block; margin-top:14px; font-family: var(--font-display); font-style: italic; font-size: .85rem; color: var(--turquoise); }
+
+  /* contact */
+  .contact-box{
+    background: var(--paper);
+    border: 1px solid var(--sand-deep);
+    padding: 36px 32px;
+  }
+  .contact-box form{ display:grid; gap: 16px; margin-top: 18px; max-width: 520px; }
+  .contact-box label{ font-size: .82rem; color: var(--ink-soft); letter-spacing: .04em; display:block; margin-bottom: 6px; }
+  .contact-box input, .contact-box textarea{
+    width:100%;
+    font-family: var(--font-jp-body);
+    font-size: .95rem;
+    padding: 11px 12px;
+    border: 1px solid var(--sand-deep);
+    background: var(--sand-light);
+    color: var(--ink);
+  }
+  .contact-box textarea{ min-height: 120px; resize: vertical; }
+  .contact-box button{
+    justify-self:start;
+    font-family: var(--font-jp-body);
+    font-size: .9rem;
+    letter-spacing: .05em;
+    background: var(--turquoise-deep);
+    color: var(--paper);
+    border: none;
+    padding: 12px 26px;
+    cursor:pointer;
+    transition: background .2s ease;
+  }
+  .contact-box button:hover{ background: var(--turquoise); }
+
+  /* footer */
+  footer{
+    margin-top: 40px;
+    background: var(--ink);
+    color: var(--sand);
+    padding: 44px 0 26px;
+  }
+  .footer-grid{
+    display:flex; justify-content:space-between; gap: 30px; flex-wrap:wrap;
+    padding-bottom: 26px; border-bottom: 1px solid rgba(217,189,140,0.25);
+  }
+  .footer-brand{ font-family: var(--font-jp-head); font-size: 1.1rem; color: var(--sand-light); }
+  .footer-links{ list-style:none; display:flex; gap:18px; margin:0; padding:0; flex-wrap:wrap; }
+  .footer-links a{ text-decoration:none; color: var(--sand); font-size: .85rem; }
+  .footer-links a:hover{ color: var(--turquoise); }
+  .footer-bottom{
+    padding-top: 20px;
+    font-size: .74rem;
+    color: rgba(217,189,140,0.7);
+    line-height: 1.8;
+  }
+  .footer-bottom a{ color: var(--turquoise); text-decoration:none; }
+  .ai-notice{ margin-top: 10px; opacity: .8; }
+
+  .reveal{ opacity:0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">Bayt</span>
+      <span class="brand-jp">砂上図書館</span>
+    </a>
+    <nav class="site-nav" aria-label="サイト内ナビゲーション">
+      <ul>
+        <li><a href="index.html" aria-current="page">index</a></li>
+        <li><a href="blog.html">blog</a></li>
+        <li><a href="gallery.html">gallery</a></li>
+        <li><a href="about.html">about</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="arch-frame" aria-hidden="true">
+        <svg viewBox="0 0 280 340" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="archGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2e9c97"/>
+              <stop offset="100%" stop-color="#c08a2e"/>
+            </linearGradient>
+          </defs>
+          <path d="M6,340 L6,150 C6,78 38,36 90,16 C112,7 130,3 140,0 C150,3 168,7 190,16 C242,36 274,78 274,150 L274,340"
+                fill="none" stroke="url(#archGrad)" stroke-width="2.5"/>
+          <path d="M26,340 L26,155 C26,92 54,54 98,34 C116,26 130,22 140,19 C150,22 164,26 182,34 C226,54 254,92 254,155 L254,340"
+                fill="none" stroke="#a9724f" stroke-width="1" stroke-dasharray="1 7" stroke-linecap="round" opacity=".7"/>
+          <!-- eight-point star at the apex -->
+          <g transform="translate(140,42)">
+            <g fill="none" stroke="#2e9c97" stroke-width="1.6">
+              <rect x="-13" y="-13" width="26" height="26" transform="rotate(0)"/>
+              <rect x="-13" y="-13" width="26" height="26" transform="rotate(45)"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="hero-copy">
+        <p class="eyebrow">— House of Wisdom, Imagined —</p>
+        <h1 class="hero-title">砂上図書館</h1>
+        <p class="hero-sub">Bayt al‑Ḥikma, revisited</p>
+        <p class="hero-lede">
+          8世紀のバグダードに実在したとされる知の殿堂「知恵の家（バイト・アル＝ヒクマ）」。
+          そこに集められた翻訳と学問への憧れから生まれた、古代イスラム世界をめぐる個人的な書庫です。
+          天文学、数学、幾何学文様、そして砂漠を越えた交易と翻訳の物語を、少しずつ書き留めています。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <svg viewBox="0 0 400 26" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#2e9c97" stroke-width="1.4">
+        <path d="M0,13 H400"/>
+      </g>
+      <g fill="none" stroke="#c08a2e" stroke-width="1.2">
+        <rect x="4"   y="6" width="14" height="14" transform="rotate(45 11 13)"/>
+        <rect x="44"  y="6" width="14" height="14" transform="rotate(45 51 13)"/>
+        <rect x="84"  y="6" width="14" height="14" transform="rotate(45 91 13)"/>
+        <rect x="124" y="6" width="14" height="14" transform="rotate(45 131 13)"/>
+        <rect x="164" y="6" width="14" height="14" transform="rotate(45 171 13)"/>
+        <rect x="204" y="6" width="14" height="14" transform="rotate(45 211 13)"/>
+        <rect x="244" y="6" width="14" height="14" transform="rotate(45 251 13)"/>
+        <rect x="284" y="6" width="14" height="14" transform="rotate(45 291 13)"/>
+        <rect x="324" y="6" width="14" height="14" transform="rotate(45 331 13)"/>
+        <rect x="364" y="6" width="14" height="14" transform="rotate(45 371 13)"/>
+      </g>
+    </svg>
+  </div>
+
+  <section id="about-teaser">
+    <div class="wrap about-teaser reveal">
+      <div>
+        <div class="section-head">
+          <span class="section-num">I.</span>
+          <h2 class="section-title">この書庫について</h2>
+        </div>
+        <p>
+          このサイトは史実そのものというより、史実に触発された「想像上の書庫」です。
+          翻訳運動によって世界中の知が一つの都市に集まった時代のロマンを軸に、
+          建築や幾何学文様、天文学の道具、砂漠を渡った交易路などを気ままに掘り下げていきます。
+        </p>
+        <div class="cta-line">
+          <a class="cta" href="about.html">about を読む →</a>
+        </div>
+      </div>
+      <div class="quote-block">
+        <p>知は、遠く砂漠を越えてやってくる。</p>
+        <span>— 書庫の扉に刻まれた、架空の一節</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <svg viewBox="0 0 400 26" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,13 H400" fill="none" stroke="#a9724f" stroke-width="1"/>
+      <circle cx="200" cy="13" r="4" fill="#2e9c97"/>
+      <circle cx="180" cy="13" r="2" fill="#c08a2e"/>
+      <circle cx="220" cy="13" r="2" fill="#c08a2e"/>
+    </svg>
+  </div>
+
+  <section id="records">
+    <div class="wrap reveal">
+      <div class="section-head">
+        <span class="section-num">II.</span>
+        <h2 class="section-title">日々の記録</h2>
+        <span class="section-note">日付と短い覚書だけの日記です</span>
+      </div>
+      <ul class="records">
+        <li>
+          <span class="rec-date">2026.08.18</span>
+          <span class="rec-text">星紋のスケッチをやり直す。八角形の重なりが思ったより難しい。</span>
+        </li>
+        <li>
+          <span class="rec-date">2026.08.12</span>
+          <span class="rec-text">アストロラーベの資料を読む。目盛りの意味が少しわかってきた。</span>
+        </li>
+        <li>
+          <span class="rec-date">2026.08.05</span>
+          <span class="rec-text">翻訳運動についての本、序章だけ読了。続きはまた今度。</span>
+        </li>
+      </ul>
+      <div class="cta-line">
+        <a class="cta" href="blog.html">記録を全部読む →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <svg viewBox="0 0 400 26" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#2e9c97" stroke-width="1.4">
+        <path d="M0,13 H400"/>
+      </g>
+      <g fill="none" stroke="#c08a2e" stroke-width="1.2">
+        <rect x="4"   y="6" width="14" height="14" transform="rotate(45 11 13)"/>
+        <rect x="44"  y="6" width="14" height="14" transform="rotate(45 51 13)"/>
+        <rect x="84"  y="6" width="14" height="14" transform="rotate(45 91 13)"/>
+        <rect x="124" y="6" width="14" height="14" transform="rotate(45 131 13)"/>
+        <rect x="164" y="6" width="14" height="14" transform="rotate(45 171 13)"/>
+        <rect x="204" y="6" width="14" height="14" transform="rotate(45 211 13)"/>
+        <rect x="244" y="6" width="14" height="14" transform="rotate(45 251 13)"/>
+        <rect x="284" y="6" width="14" height="14" transform="rotate(45 291 13)"/>
+        <rect x="324" y="6" width="14" height="14" transform="rotate(45 331 13)"/>
+        <rect x="364" y="6" width="14" height="14" transform="rotate(45 371 13)"/>
+      </g>
+    </svg>
+  </div>
+
+  <section id="gallery-teaser">
+    <div class="wrap reveal">
+      <div class="section-head">
+        <span class="section-num">III.</span>
+        <h2 class="section-title">回廊 — 文様のかけら</h2>
+      </div>
+      <div class="swatch-grid">
+        <div class="swatch">
+          <svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#efe3c8"/>
+            <g stroke="#2e9c97" stroke-width="2" fill="none">
+              <rect x="20" y="20" width="60" height="60" transform="rotate(0 50 50)"/>
+              <rect x="20" y="20" width="60" height="60" transform="rotate(45 50 50)"/>
+            </g>
+          </svg>
+        </div>
+        <div class="swatch">
+          <svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#d9bd8c"/>
+            <circle cx="50" cy="50" r="30" fill="none" stroke="#c08a2e" stroke-width="2"/>
+            <circle cx="50" cy="50" r="18" fill="none" stroke="#1d6b68" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="swatch">
+          <svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#f7f0dc"/>
+            <g stroke="#a9724f" stroke-width="2" fill="none">
+              <path d="M50,10 L90,50 L50,90 L10,50 Z"/>
+              <path d="M50,30 L70,50 L50,70 L30,50 Z"/>
+            </g>
+          </svg>
+        </div>
+        <div class="swatch">
+          <svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#2a2016"/>
+            <g stroke="#2e9c97" stroke-width="2" fill="none">
+              <rect x="25" y="25" width="50" height="50"/>
+              <rect x="25" y="25" width="50" height="50" transform="rotate(45 50 50)"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="cta-line">
+        <a class="cta" href="gallery.html">回廊へ進む →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <svg viewBox="0 0 400 26" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,13 H400" fill="none" stroke="#a9724f" stroke-width="1"/>
+      <circle cx="200" cy="13" r="4" fill="#2e9c97"/>
+    </svg>
+  </div>
+
+  <section id="contact">
+    <div class="wrap reveal">
+      <div class="contact-box">
+        <div class="section-head" style="margin-bottom:6px;">
+          <span class="section-num">IV.</span>
+          <h2 class="section-title">扉を叩く — お問い合わせ</h2>
+        </div>
+        <p style="color:var(--ink-soft); font-size:.9rem; margin:8px 0 0;">
+          誤字の指摘、感想、その他ご連絡はこちらからどうぞ。
+        </p>
+        <form action="https://formspree.io/f/maqvpvoz" method="POST">
+          <div>
+            <label for="name">お名前</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div>
+            <label for="email">メールアドレス</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div>
+            <label for="message">メッセージ</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          <button type="submit">送信する</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">砂上図書館 <span style="opacity:.6; font-size:.75rem;">— Bayt al‑Ḥikma, Imagined</span></div>
+      <ul class="footer-links">
+        <li><a href="index.html">index</a></li>
+        <li><a href="blog.html">blog</a></li>
+        <li><a href="gallery.html">gallery</a></li>
+        <li><a href="about.html">about</a></li>
+        <li><a href="https://azaleacreativeroom888.github.io" target="_blank" rel="noopener">Azalea Creative Room</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <p class="ai-notice">
+        当サイトの文章・画像等のすべてのコンテンツを、AIモデルの学習目的で使用することを禁じます。<br>
+        The use of any content on this site (text, images, or otherwise) for AI training purposes is strictly prohibited.
+      </p>
+      <p>© 砂上図書館 / Azalea Creative Room. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // gentle reveal-on-scroll, respects prefers-reduced-motion
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  }
+</script>
+
+</body>
+</html>
