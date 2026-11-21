@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>回廊 ｜ 砂上図書館</title>
+<meta name="description" content="砂上図書館のギャラリー。幾何学文様やアーチ、砂漠の色など、古代イスラム世界から着想を得た絵やスケッチを並べています。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Shippori+Mincho:wght@400;600;800&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand-light: #efe3c8;
+    --sand: #d9bd8c;
+    --sand-deep: #c2a06c;
+    --clay: #a9724f;
+    --ink: #2a2016;
+    --ink-soft: #4a3a28;
+    --turquoise: #2e9c97;
+    --turquoise-deep: #1d6b68;
+    --gold: #c08a2e;
+    --paper: #f7f0dc;
+
+    --font-display: 'Amiri', serif;
+    --font-jp-head: 'Shippori Mincho', serif;
+    --font-jp-body: 'Noto Sans JP', sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background: var(--sand-light);
+    color: var(--ink);
+    font-family: var(--font-jp-body);
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  img{ max-width:100%; display:block; }
+  ::selection{ background: var(--turquoise); color: var(--paper); }
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--turquoise-deep);
+    outline-offset: 3px;
+  }
+
+  body::before{
+    content:"";
+    position: fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(169,114,79,0.06) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(46,156,151,0.05) 0, transparent 45%);
+  }
+
+  .wrap{ max-width: 1080px; margin:0 auto; padding: 0 28px; position:relative; z-index:1; }
+
+  .divider{ width:100%; height: 26px; display:flex; justify-content:center; align-items:center; overflow:hidden; }
+  .divider svg{ height: 100%; width: auto; }
+
+  /* ---------- header / nav ---------- */
+  header.site-header{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(239,227,200,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--sand-deep);
+  }
+  .nav-inner{
+    max-width:1080px; margin:0 auto; padding: 16px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    flex-wrap: wrap;
+  }
+  .brand{ display:flex; align-items:baseline; gap:10px; text-decoration:none; }
+  .brand-mark{ font-family: var(--font-display); font-size: 1.55rem; color: var(--turquoise-deep); letter-spacing: .04em; }
+  .brand-jp{ font-family: var(--font-jp-head); font-size: 1.05rem; font-weight: 600; color: var(--ink); letter-spacing: .08em; }
+  nav.site-nav ul{ list-style:none; display:flex; gap: 6px; margin:0; padding:0; flex-wrap:wrap; }
+  nav.site-nav a{
+    display:inline-block; text-decoration:none; font-size: .92rem; letter-spacing: .06em;
+    padding: 8px 14px; border-radius: 2px; color: var(--ink-soft); position:relative; transition: color .2s ease;
+  }
+  nav.site-nav a::after{
+    content:""; position:absolute; left:14px; right:14px; bottom:5px; height:1px;
+    background: var(--turquoise); transform: scaleX(0); transform-origin: left; transition: transform .25s ease;
+  }
+  nav.site-nav a:hover::after, nav.site-nav a[aria-current="page"]::after{ transform: scaleX(1); }
+  nav.site-nav a[aria-current="page"]{ color: var(--turquoise-deep); font-weight:500; }
+
+  /* ---------- page hero ---------- */
+  .page-hero{ padding: 60px 28px 34px; text-align:center; }
+  .eyebrow{
+    font-family: var(--font-display); font-style: italic; color: var(--turquoise-deep);
+    letter-spacing: .12em; font-size: .95rem; margin: 0 0 6px;
+  }
+  h1.page-title{
+    font-family: var(--font-jp-head); font-weight: 800; font-size: clamp(1.8rem, 4.5vw, 2.5rem);
+    margin: 0 0 10px; letter-spacing: .05em;
+  }
+  .page-lede{ max-width: 520px; margin: 0 auto; font-size: .94rem; color: var(--ink-soft); }
+
+  /* ---------- filter ---------- */
+  .filters{
+    display:flex; justify-content:center; gap: 10px; flex-wrap: wrap;
+    padding: 38px 0 6px;
+  }
+  .filters button{
+    font-family: var(--font-jp-body);
+    font-size: .85rem; letter-spacing: .06em;
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--sand-deep);
+    padding: 7px 18px;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .filters button:hover{ border-color: var(--turquoise-deep); color: var(--turquoise-deep); }
+  .filters button[aria-pressed="true"]{
+    background: var(--turquoise-deep); color: var(--paper); border-color: var(--turquoise-deep);
+  }
+
+  /* ---------- gallery grid ---------- */
+  section.gallery{ padding: 30px 0 60px; }
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 26px;
+  }
+  figure.tile{
+    margin:0;
+    background: var(--paper);
+    border: 1px solid var(--sand-deep);
+    padding: 12px 12px 16px;
+    cursor: pointer;
+    transition: transform .25s ease, box-shadow .25s ease;
+    position: relative;
+  }
+  figure.tile:hover, figure.tile:focus-visible{ transform: translateY(-4px); box-shadow: 0 10px 26px rgba(42,32,22,0.14); }
+  figure.tile.hidden{ display:none; }
+  .tile-art{
+    aspect-ratio: 1;
+    overflow:hidden;
+    border: 1px solid var(--sand-deep);
+    background: var(--sand-light);
+  }
+  .tile-art svg, .tile-art img{ width:100%; height:100%; object-fit: cover; display:block; }
+  figcaption{ padding: 14px 4px 0; }
+  .cap-title{
+    font-family: var(--font-jp-head);
+    font-size: 1rem; font-weight: 600; margin: 0 0 2px;
+  }
+  .cap-meta{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: .85rem;
+    color: var(--clay);
+    margin: 0;
+  }
+
+  .note-box{
+    margin-top: 42px;
+    padding: 18px 22px;
+    border-left: 3px solid var(--turquoise);
+    background: rgba(247,240,220,0.7);
+    font-size: .86rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position: fixed; inset:0; z-index: 100;
+    background: rgba(42,32,22,0.88);
+    display:none;
+    align-items:center; justify-content:center;
+    padding: 24px;
+  }
+  .lightbox.open{ display:flex; }
+  .lb-inner{
+    max-width: 560px; width: 100%;
+    background: var(--paper);
+    padding: 18px 18px 22px;
+    border: 1px solid var(--sand-deep);
+    position: relative;
+  }
+  .lb-art{ aspect-ratio: 1; border: 1px solid var(--sand-deep); overflow:hidden; background: var(--sand-light); }
+  .lb-art svg, .lb-art img{ width:100%; height:100%; object-fit: cover; display:block; }
+  .lb-title{ font-family: var(--font-jp-head); font-size: 1.15rem; font-weight:600; margin: 16px 0 2px; }
+  .lb-meta{ font-family: var(--font-display); font-style: italic; color: var(--clay); font-size: .9rem; margin: 0 0 8px; }
+  .lb-desc{ font-size: .9rem; color: var(--ink-soft); margin: 0; }
+  .lb-close{
+    position:absolute; top:-14px; right:-14px;
+    width: 36px; height: 36px; border-radius: 50%;
+    border: none; cursor: pointer;
+    background: var(--turquoise-deep); color: var(--paper);
+    font-size: 1.1rem; line-height: 1;
+  }
+  .lb-close:hover{ background: var(--turquoise); }
+
+  /* ---------- footer ---------- */
+  footer{ margin-top: 40px; background: var(--ink); color: var(--sand); padding: 44px 0 26px; }
+  .footer-grid{
+    display:flex; justify-content:space-between; gap: 30px; flex-wrap:wrap;
+    padding-bottom: 26px; border-bottom: 1px solid rgba(217,189,140,0.25);
+    max-width:1080px; margin:0 auto; padding-left:28px; padding-right:28px;
+  }
+  .footer-brand{ font-family: var(--font-jp-head); font-size: 1.1rem; color: var(--sand-light); }
+  .footer-links{ list-style:none; display:flex; gap:18px; margin:0; padding:0; flex-wrap:wrap; }
+  .footer-links a{ text-decoration:none; color: var(--sand); font-size: .85rem; }
+  .footer-links a:hover{ color: var(--turquoise); }
+  .footer-bottom{
+    max-width:1080px; margin:0 auto; padding: 20px 28px 0;
+    font-size: .74rem; color: rgba(217,189,140,0.7); line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">Bayt</span>
+      <span class="brand-jp">砂上図書館</span>
+    </a>
+    <nav class="site-nav" aria-label="サイト内ナビゲーション">
+      <ul>
+        <li><a href="index.html">index</a></li>
+        <li><a href="blog.html">blog</a></li>
+        <li><a href="gallery.html" aria-current="page">gallery</a></li>
+        <li><a href="about.html">about</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">— The Cloister of Patterns —</p>
+      <h1 class="page-title">回廊 — 文様のかけら</h1>
+      <p class="page-lede">幾何学文様、アーチ、砂漠の色。古代イスラム世界から着想を得たスケッチを、回廊の壁に掛けるように並べています。</p>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <svg viewBox="0 0 400 26" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#2e9c97" stroke-width="1.4"><path d="M0,13 H400"/></g>
+      <g fill="none" stroke="#c08a2e" stroke-width="1.2">
+        <rect x="4"   y="6" width="14" height="14" transform="rotate(45 11 13)"/>
+        <rect x="44"  y="6" width="14" height="14" transform="rotate(45 51 13)"/>
+        <rect x="84"  y="6" width="14" height="14" transform="rotate(45 91 13)"/>
+        <rect x="124" y="6" width="14" height="14" transform="rotate(45 131 13)"/>
+        <rect x="164" y="6" width="14" height="14" transform="rotate(45 171 13)"/>
+        <rect x="204" y="6" width="14" height="14" transform="rotate(45 211 13)"/>
+        <rect x="244" y="6" width="14" height="14" transform="rotate(45 251 13)"/>
+        <rect x="284" y="6" width="14" height="14" transform="rotate(45 291 13)"/>
+        <rect x="324" y="6" width="14" height="14" transform="rotate(45 331 13)"/>
+        <rect x="364" y="6" width="14" height="14" transform="rotate(45 371 13)"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="wrap">
+    <div class="filters" role="group" aria-label="カテゴリで絞り込む">
+      <button type="button" data-filter="all" aria-pressed="true">すべて</button>
+      <button type="button" data-filter="pattern" aria-pressed="false">文様</button>
+      <button type="button" data-filter="arch" aria-pressed="false">建築</button>
+      <button type="button" data-filter="color" aria-pressed="false">色</button>
+    </div>
+  </div>
+
+  <section class="gallery">
+    <div class="wrap">
+      <div class="grid" id="grid">
+
+        <!-- 1 -->
+        <figure class="tile" data-cat="pattern" tabindex="0"
+          data-title="八角星の練習" data-meta="2026.08 / スケッチ"
+          data-desc="正方形を45度ずらして重ねた、いちばん基本の八角星。ここから全ての文様が始まる気がします。">
+          <div class="tile-art">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" fill="#efe3c8"/>
+              <g fill="none" stroke="#2e9c97" stroke-width="2.2">
+                <rect x="22" y="22" width="56" height="56"/>
+                <rect x="22" y="22" width="56" height="56" transform="rotate(45 50 50)"/>
+              </g>
+              <circle cx="50" cy="50" r="9" fill="none" stroke="#c08a2e" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <figcaption>
+            <p class="cap-title">八角星の練習</p>
+            <p class="cap-meta">2026.08 / スケッチ</p>
+          </figcaption>
+        </figure>
+
+        <!-- 2 -->
+        <figure class="tile" data-cat="arch" tabindex="0"
+          data-title="尖頭アーチの輪郭" data-meta="2026.08 / スケッチ"
+          data-desc="ミフラーブ（礼拝の壁龕）の形を意識して描いた尖頭アーチ。点線の内側の線がお気に入りです。">
+          <div class="tile-art">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" fill="#d9bd8c"/>
+              <path d="M24,96 L24,54 C24,34 36,20 50,10 C64,20 76,34 76,54 L76,96" fill="#f7f0dc" stroke="#1d6b68" stroke-width="2.4"/>
+              <path d="M34,96 L34,56 C34,42 42,32 50,25 C58,32 66,42 66,56 L66,96" fill="none" stroke="#a9724f" stroke-width="1.2" stroke-dasharray="1 4" stroke-linecap="round"/>
+              <circle cx="50" cy="46" r="3" fill="#2e9c97"/>
+            </svg>
+          </div>
+          <figcaption>
+            <p class="cap-title">尖頭アーチの輪郭</p>
+            <p class="cap-meta">2026.08 / スケッチ</p>
+          </figcaption>
+        </figure>
+
+        <!-- 3 -->
+        <figure class="tile" data-cat="color" tabindex="0"
+          data-title="砂漠の五色" data-meta="2026.07 / カラースタディ"
+          data-desc="このサイトの色の元になった、砂・粘土・金・ターコイズ・インクの五色。ターコイズだけが水の記憶みたいに浮き上がります。">
+          <div class="tile-art">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0"  y="0" width="20" height="100" fill="#efe3c8"/>
+              <rect x="20" y="0" width="20" height="100" fill="#d9bd8c"/>
+              <rect x="40" y="0" width="20" height="100" fill="#a9724f"/>
+              <rect x="60" y="0" width="20" height="100" fill="#2e9c97"/>
+              <rect x="80" y="0" width="20" height="100" fill="#2a2016"/>
+              <rect x="0" y="82" width="100" height="3" fill="#c08a2e"/>
+            </svg>
+          </div>
+          <figcaption>
+            <p class="cap-title">砂漠の五色</p>
+            <p class="cap-meta">2026.07 / カラースタディ</p>
+          </figcaption>
+        </figure>
+
+        <!-- 4 -->
+        <figure class="tile" data-cat="pattern" tabindex="0"
+          data-title="重なる円環" data-meta="2026.07 / スケッチ"
+          data-desc="コンパスだけで作れる、六重の円の重なり。ここから花のような文様に育てていく予定です。">
+          <div class="tile-art">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" fill="#f7f0dc"/>
+              <g fill="none" stroke="#1d6b68" stroke-width="1.6">
+                <circle cx="50" cy="50" r="22"/>
+                <circle cx="50" cy="28" r="22"/>
+                <circle cx="50" cy="72" r="22"/>
+                <circle cx="31" cy="39" r="22"/>
+                <circle cx="69" cy="39" r="22"/>
+                <circle cx="31" cy="61" r="22"/>
+                <circle cx="69" cy="61" r="22"/>
+              </g>
+            </svg>
+          </div>
+          <figcaption>
+            <p class="cap-title">重なる円環</p>
+            <p class="cap-meta">2026.07 / スケッチ</p>
+          </figcaption>
+        </figure>
+
+        <!-- 5 -->
+        <figure class="tile" data-cat="arch" tabindex="0"
+          data-title="ドームと月" data-meta="2026.07 / イラスト"
+          data-desc="夕暮れのドームと細い月。空の色を砂色から水色へ溶かしてみた一枚です。">
+          <div class="tile-art">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="sky5" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#2e9c97"/>
+                  <stop offset="100%" stop-color="#efe3c8"/>
+                </linearGradient>
+              </defs>
+              <rect width="100" height="100" fill="url(#sky5)"/>
+              <path d="M30,76 C30,52 40,40 50,40 C60,40 70,52 70,76 Z" fill="#a9724f"/>
+              <rect x="22" y="76" width="56" height="18" fill="#c2a06c"/>
+              <rect x="48.8" y="30" width="2.4" height="10" fill="#2a2016"/>
+              <path d="M78,18 A8,8 0 1 0 86,30 A6.5,6.5 0 1 1 78,18 Z" fill="#f7f0dc"/>
+            </svg>
+          </div>
+          <figcaption>
+            <p class="cap-title">ドームと月</p>
+            <p class="cap-meta">2026.07 / イラスト</p>
+          </figcaption>
+        </figure>
+
+        <!-- 6 -->
+        <figure class="tile" data-cat="pattern" tabindex="0"
+          data-title="ひし形のタイル" data-meta="2026.06 / スケッチ"
+          data-desc="ひし形を斜めに敷き詰めたシンプルなタイル。色を二色に絞ると、意外と落ち着きます。">
+          <div class="tile-art">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="lozenge" width="25" height="25" patternUnits="userSpaceOnUse">
+                  <rect width="25" height="25" fill="#efe3c8"/>
+                  <path d="M12.5,2 L23,12.5 L12.5,23 L2,12.5 Z" fill="none" stroke="#2e9c97" stroke-width="1.6"/>
+                  <circle cx="12.5" cy="12.5" r="2" fill="#c08a2e"/>
+                </pattern>
+              </defs>
+              <rect width="100" height="100" fill="url(#lozenge)"/>
+            </svg>
+          </div>
+          <figcaption>
+            <p class="cap-title">ひし形のタイル</p>
+            <p class="cap-meta">2026.06 / スケッチ</p>
+          </figcaption>
+        </figure>
+
+        <!-- 7 -->
+        <figure class="tile" data-cat="color" tabindex="0"
+          data-title="夜の砂丘" data-meta="2026.06 / カラースタディ"
+          data-desc="インクのような夜空に、砂丘の線とひと筋の水色。色数を絞って、静けさを出す練習。">
+          <div class="tile-art">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" fill="#2a2016"/>
+              <circle cx="72" cy="24" r="6" fill="#efe3c8"/>
+              <path d="M0,70 C20,54 40,60 55,68 C72,76 88,64 100,58 L100,100 L0,100 Z" fill="#a9724f"/>
+              <path d="M0,82 C25,72 45,80 65,84 C80,87 92,80 100,76 L100,100 L0,100 Z" fill="#c2a06c"/>
+              <path d="M0,68 C20,52 40,58 55,66 C72,74 88,62 100,56" fill="none" stroke="#2e9c97" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <figcaption>
+            <p class="cap-title">夜の砂丘</p>
+            <p class="cap-meta">2026.06 / カラースタディ</p>
+          </figcaption>
+        </figure>
+
+        <!-- 8 -->
+        <figure class="tile" data-cat="arch" tabindex="0"
+          data-title="ミナレットの影" data-meta="2026.06 / イラスト"
+          data-desc="細く高い塔（ミナレット）のシルエット。縦長の構図を正方形に収めるのに苦戦しました。">
+          <div class="tile-art">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" fill="#efe3c8"/>
+              <rect x="0" y="86" width="100" height="14" fill="#d9bd8c"/>
+              <rect x="44" y="24" width="12" height="62" fill="#a9724f"/>
+              <rect x="41" y="38" width="18" height="3" fill="#c08a2e"/>
+              <rect x="41" y="56" width="18" height="3" fill="#c08a2e"/>
+              <path d="M42,24 C42,14 46,10 50,6 C54,10 58,14 58,24 Z" fill="#2e9c97"/>
+              <rect x="48.9" y="1" width="2.2" height="6" fill="#1d6b68"/>
+              <rect x="47" y="46" width="6" height="8" rx="3" fill="#2a2016"/>
+            </svg>
+          </div>
+          <figcaption>
+            <p class="cap-title">ミナレットの影</p>
+            <p class="cap-meta">2026.06 / イラスト</p>
+          </figcaption>
+        </figure>
+
+        <!-- 9 -->
+        <figure class="tile" data-cat="pattern" tabindex="0"
+          data-title="アラベスクの蔓" data-meta="2026.05 / スケッチ"
+          data-desc="渦を巻く蔓と小さな葉。終わりのない曲線を描くのが、意外と瞑想的でした。">
+          <div class="tile-art">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" fill="#f7f0dc"/>
+              <g fill="none" stroke="#1d6b68" stroke-width="2" stroke-linecap="round">
+                <path d="M50,92 C50,72 30,66 30,48 C30,34 44,30 48,40 C51,48 40,52 38,46"/>
+                <path d="M50,92 C50,72 70,66 70,48 C70,34 56,30 52,40 C49,48 60,52 62,46"/>
+                <path d="M50,92 L50,26"/>
+              </g>
+              <g fill="#2e9c97">
+                <ellipse cx="40" cy="70" rx="5" ry="2.6" transform="rotate(-35 40 70)"/>
+                <ellipse cx="60" cy="70" rx="5" ry="2.6" transform="rotate(35 60 70)"/>
+                <ellipse cx="50" cy="20" rx="3" ry="6"/>
+              </g>
+              <circle cx="38" cy="46" r="2.2" fill="#c08a2e"/>
+              <circle cx="62" cy="46" r="2.2" fill="#c08a2e"/>
+            </svg>
+          </div>
+          <figcaption>
+            <p class="cap-title">アラベスクの蔓</p>
+            <p class="cap-meta">2026.05 / スケッチ</p>
+          </figcaption>
+        </figure>
+
+      </div>
+
+      <p class="note-box">
+        ※ 現在は文様の習作を中心に並べています。作品が増えたら、各タイルの <code>&lt;svg&gt;</code> を <code>&lt;img src="画像ファイル名"&gt;</code> に差し替えると、そのまま画像ギャラリーとして使えます（クリックで拡大表示にも対応）。
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="作品の拡大表示">
+  <div class="lb-inner">
+    <button type="button" class="lb-close" id="lbClose" aria-label="閉じる">×</button>
+    <div class="lb-art" id="lbArt"></div>
+    <p class="lb-title" id="lbTitle"></p>
+    <p class="lb-meta" id="lbMeta"></p>
+    <p class="lb-desc" id="lbDesc"></p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">砂上図書館 <span style="opacity:.6; font-size:.75rem;">— Bayt al‑Ḥikma, Imagined</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">index</a></li>
+      <li><a href="blog.html">blog</a></li>
+      <li><a href="gallery.html">gallery</a></li>
+      <li><a href="about.html">about</a></li>
+      <li><a href="https://azaleacreativeroom888.github.io" target="_blank" rel="noopener">Azalea Creative Room</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <p>
+      当サイトの文章・画像等のすべてのコンテンツを、AIモデルの学習目的で使用することを禁じます。<br>
+      The use of any content on this site (text, images, or otherwise) for AI training purposes is strictly prohibited.
+    </p>
+    <p>© 砂上図書館 / Azalea Creative Room. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    // ---- category filter ----
+    const buttons = document.querySelectorAll('.filters button');
+    const tiles = document.querySelectorAll('figure.tile');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const f = btn.dataset.filter;
+        buttons.forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+        tiles.forEach(t => {
+          t.classList.toggle('hidden', !(f === 'all' || t.dataset.cat === f));
+        });
+      });
+    });
+
+    // ---- lightbox ----
+    const lb = document.getElementById('lightbox');
+    const lbArt = document.getElementById('lbArt');
+    const lbTitle = document.getElementById('lbTitle');
+    const lbMeta = document.getElementById('lbMeta');
+    const lbDesc = document.getElementById('lbDesc');
+    const lbClose = document.getElementById('lbClose');
+    let lastFocus = null;
+
+    function openLb(tile){
+      lastFocus = document.activeElement;
+      const art = tile.querySelector('.tile-art').firstElementChild.cloneNode(true);
+      // ids are kept on purpose: the clone's gradient/pattern fills resolve to the original's defs
+      lbArt.innerHTML = '';
+      lbArt.appendChild(art);
+      lbTitle.textContent = tile.dataset.title;
+      lbMeta.textContent = tile.dataset.meta;
+      lbDesc.textContent = tile.dataset.desc;
+      lb.classList.add('open');
+      lbClose.focus();
+    }
+    function closeLb(){
+      lb.classList.remove('open');
+      if (lastFocus) lastFocus.focus();
+    }
+
+    tiles.forEach(t => {
+      t.addEventListener('click', () => openLb(t));
+      t.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(t); }
+      });
+    });
+    lbClose.addEventListener('click', closeLb);
+    lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) closeLb(); });
+  })();
+</script>
+
+</body>
+</html>
